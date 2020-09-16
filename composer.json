@@ -1,0 +1,27 @@
+{
+  "name": "cjrasmussen/number",
+  "description": "Simple functions for numeric conversions",
+  "version": "1.0.0",
+  "keywords": ["numbers", "roman numerals"],
+  "homepage": "https://www.clarkrasmussen.com",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Clark Rasmussen",
+      "homepage": "https://www.clarkrasmussen.com",
+      "role": "Developer"
+    }
+  ],
+  "support": {
+    "issues": "https://github.com/cjrasmussen/Number/issues",
+    "source": "https://github.com/cjrasmussen/Number"
+  },
+  "require": {
+    "php": ">=7.1.0",
+  },
+  "autoload": {
+    "psr-4": {
+      "cjrasmussen\\Number\\": "src/"
+    }
+  }
+}
