@@ -1,4 +1,4 @@
-# Color
+# Number
 
 Simple functions for numeric conversions.
 
