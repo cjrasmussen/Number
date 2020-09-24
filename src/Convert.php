@@ -16,7 +16,7 @@ class Convert
 		if ((substr($num, -2) >= 11) AND (substr($num, -2) <= 13) AND (strlen($num) === 2)) {
 			$ordinal = 'th';
 		} else {
-			$last_char = $num{(strlen($num) - 1)};
+			$last_char = $num[(strlen($num) - 1)];
 
 			switch ($last_char) {
 				case '1':
@@ -70,7 +70,7 @@ class Convert
 			'decillion'
 		];
 
-		if ((strlen($num) === 4) AND ($num{1} !== '0') AND ($force_hundreds)) {
+		if ((strlen($num) === 4) AND ($num[1] !== '0') AND ($force_hundreds)) {
 			$parts[0] = substr($num, 0, 2);
 			$parts[1] = substr($num, 2, 2);
 
@@ -141,53 +141,53 @@ class Convert
 					$english = 'nineteen';
 					break;
 				default:
-					switch ($num{0}) {
-						case '2':
+					switch ((int)$num[0]) {
+						case 2:
 							$english = 'twenty';
-							if ($num{1}) {
-								$english .= '-' . self::intToEnglish($num{1});
+							if ($num[1]) {
+								$english .= '-' . self::intToEnglish($num[1]);
 							}
 							break;
-						case '3':
+						case 3:
 							$english = 'thirty';
-							if ($num{1}) {
-								$english .= '-' . self::intToEnglish($num{1});
+							if ($num[1]) {
+								$english .= '-' . self::intToEnglish($num[1]);
 							}
 							break;
-						case '4':
+						case 4:
 							$english = 'forty';
-							if ($num{1}) {
-								$english .= '-' . self::intToEnglish($num{1});
+							if ($num[1]) {
+								$english .= '-' . self::intToEnglish($num[1]);
 							}
 							break;
-						case '5':
+						case 5:
 							$english = 'fifty';
-							if ($num{1}) {
-								$english .= '-' . self::intToEnglish($num{1});
+							if ($num[1]) {
+								$english .= '-' . self::intToEnglish($num[1]);
 							}
 							break;
-						case '6':
+						case 6:
 							$english = 'sixty';
-							if ($num{1}) {
-								$english .= '-' . self::intToEnglish($num{1});
+							if ($num[1]) {
+								$english .= '-' . self::intToEnglish($num[1]);
 							}
 							break;
-						case '7':
+						case 7:
 							$english = 'seventy';
-							if ($num{1}) {
-								$english .= '-' . self::intToEnglish($num{1});
+							if ($num[1]) {
+								$english .= '-' . self::intToEnglish($num[1]);
 							}
 							break;
-						case '8':
+						case 8:
 							$english = 'eighty';
-							if ($num{1}) {
-								$english .= '-' . self::intToEnglish($num{1});
+							if ($num[1]) {
+								$english .= '-' . self::intToEnglish($num[1]);
 							}
 							break;
-						case '9':
+						case 9:
 							$english = 'ninty';
-							if ($num{1}) {
-								$english .= '-' . self::intToEnglish($num{1});
+							if ($num[1]) {
+								$english .= '-' . self::intToEnglish($num[1]);
 							}
 							break;
 					}
@@ -215,7 +215,7 @@ class Convert
 						$temp = self::intToEnglish(substr($part, 0, 1)) . ' ' . $labels[0] . ' ' . self::intToEnglish(substr($part,
 								1, 2));
 					} else {
-						$temp = self::intToEnglish($part{0}) . ' ' . $labels[0];
+						$temp = self::intToEnglish($part[0]) . ' ' . $labels[0];
 					}
 
 					if ($i > 0) {
@@ -251,94 +251,94 @@ class Convert
 		$second_chunk = str_repeat('0', (3 - strlen($second_chunk))) . $second_chunk;
 
 		// THIRD-TO-LAST DIGIT
-		switch ($second_chunk{0}) {
-			case '1':
+		switch ((int)$second_chunk[0]) {
+			case 1:
 				$roman .= 'C';
 				break;
-			case '2':
+			case 2:
 				$roman .= 'CC';
 				break;
-			case '3':
+			case 3:
 				$roman .= 'CCC';
 				break;
-			case '4':
+			case 4:
 				$roman .= 'CD';
 				break;
-			case '5':
+			case 5:
 				$roman .= 'D';
 				break;
-			case '6':
+			case 6:
 				$roman .= 'DC';
 				break;
-			case '7':
+			case 7:
 				$roman .= 'DCC';
 				break;
-			case '8':
+			case 8:
 				$roman .= 'DCCC';
 				break;
-			case '9':
+			case 9:
 				$roman .= 'CM';
 				break;
 		}
 
 		// SECOND-TO-LAST DIGIT
-		switch ($second_chunk{1}) {
-			case '1':
+		switch ((int)$second_chunk[1]) {
+			case 1:
 				$roman .= 'X';
 				break;
-			case '2':
+			case 2:
 				$roman .= 'XX';
 				break;
-			case '3':
+			case 3:
 				$roman .= 'XXX';
 				break;
-			case '4':
+			case 4:
 				$roman .= 'XL';
 				break;
-			case '5':
+			case 5:
 				$roman .= 'L';
 				break;
-			case '6':
+			case 6:
 				$roman .= 'LX';
 				break;
-			case '7':
+			case 7:
 				$roman .= 'LXX';
 				break;
-			case '8':
+			case 8:
 				$roman .= 'LXXX';
 				break;
-			case '9':
+			case 9:
 				$roman .= 'XC';
 				break;
 		}
 
 		// LAST DIGIT
-		switch ($second_chunk{2}) {
-			case '1':
+		switch ((int)$second_chunk[2]) {
+			case 1:
 				$roman .= 'I';
 				break;
-			case '2':
+			case 2:
 				$roman .= 'II';
 				break;
-			case '3':
+			case 3:
 				$roman .= 'III';
 				break;
-			case '4':
+			case 4:
 				$roman .= 'IV';
 				break;
-			case '5':
+			case 5:
 				$roman .= 'V';
 				break;
-			case '6':
+			case 6:
 				$roman .= 'VI';
 				break;
-			case '7':
+			case 7:
 				$roman .= 'VII';
 				break;
-			case '8':
+			case 8:
 				$roman .= 'VIII';
 				break;
-			case '9':
+			case 9:
 				$roman .= 'IX';
 				break;
 		}
