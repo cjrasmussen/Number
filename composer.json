@@ -1,7 +1,7 @@
 {
   "name": "cjrasmussen/number",
   "description": "Simple functions for numeric conversions",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "keywords": ["numbers", "roman numerals"],
   "homepage": "https://www.clarkrasmussen.com",
   "license": "MIT",

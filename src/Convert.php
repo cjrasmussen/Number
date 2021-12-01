@@ -1,6 +1,8 @@
 <?php
 namespace cjrasmussen\Number;
 
+use RuntimeException;
+
 class Convert
 {
 	/**
@@ -235,7 +237,7 @@ class Convert
 	}
 
 	/**
-	 * Returns the roman numeral representation of an arabic integer
+	 * Returns the Roman numeral representation of an Arabic integer
 	 *
 	 * @param int $int
 	 * @return string
@@ -348,5 +350,98 @@ class Convert
 		}
 
 		return $roman;
+	}
+
+	/**
+	 * Returns the Arabic integer representation of a Roman numeral
+	 *
+	 * @param string $input
+	 * @return int
+	 */
+	public static function romanToInt($input): int
+	{
+		$values = ['I' => 1, 'V' => 5, 'X' => 10, 'L' => 50, 'C' => 100, 'D' => 500, 'M' => 1000];
+		foreach ($values AS $key => $value) {
+			$values[strtolower($key)] = $value * 1000;
+		}
+		$roman_numeral_keys = array_keys($values);
+		$roman_numeral_order = array_flip($roman_numeral_keys);
+
+		$input = strtoupper($input);
+		$input_length = strlen($input);
+
+		$result = $index = 0;
+		$sanitized = null;
+		$character_count = [];
+		$overline = false;
+
+		// SANITIZE INPUT AND CHECK FOR ERRORS
+		do {
+			$character = $input[$index];
+
+			if ($character === '_') {
+				$overline = true;
+				$index++;
+				continue;
+			}
+
+			if (!array_key_exists($character, $values)) {
+				$msg = 'Improperly-formatted input: Character "' . $character . '" is not a valid roman numeral';
+				throw new RuntimeException($msg);
+			}
+
+			if ($overline) {
+				$character = strtolower($character);
+				$overline = false;
+			}
+
+			$character_count[$character]++;
+			if ($character_count[$character] > 3) {
+				$msg = 'Improperly-formatted input: Character "' . $character . '" appears too many times consecutively';
+				throw new RuntimeException($msg);
+			}
+
+			$sanitized .= $character;
+			$index++;
+		} while ($index < $input_length);
+
+		$sanitized = strrev($sanitized);
+		$sanitized_length = strlen($sanitized);
+		$index = $value = 0;
+
+		do {
+			$orders = [$roman_numeral_order[$sanitized[$index]]];
+			if ((($index + 1) < $sanitized_length) && ($values[$sanitized[$index]] > $values[$sanitized[$index + 1]])) {
+				if ((($roman_numeral_order[$sanitized[$index]] - $roman_numeral_order[$sanitized[$index + 1]]) !== 1) && (!((($roman_numeral_order[$sanitized[$index]] - $roman_numeral_order[$sanitized[$index + 1]]) === 2) && (strpos((string)$values[$roman_numeral_keys[$roman_numeral_order[$sanitized[$index]] - 1]], '5') === 0)))) {
+					$msg = 'Improperly-formatted input: Character order incorrect for provided string "' . $input . '"';
+					throw new RuntimeException($msg);
+				}
+
+				$orders[] = $roman_numeral_order[$sanitized[$index + 1]];
+				$value = $values[$sanitized[$index]] - $values[$sanitized[$index + 1]];
+				$index += 2;
+			} else {
+				$value = $values[$sanitized[$index]];
+				$index++;
+			}
+
+			if ($index < $sanitized_length) {
+				if (($values[$sanitized[$index]] < $value)) {
+					$msg = 'Improperly-formatted input: Character order incorrect for provided string "' . $input . '"';
+					throw new RuntimeException($msg);
+				}
+
+				foreach ($orders AS $order) {
+					if ($roman_numeral_order[$sanitized[$index]] < $order) {
+						$msg = 'Improperly-formatted input: Character order incorrect for provided string "' . $input . '"';
+						throw new RuntimeException($msg);
+					}
+				}
+			}
+
+			$result += $value;
+		} while ($index < $sanitized_length);
+
+		return $result;
 	}
 }
