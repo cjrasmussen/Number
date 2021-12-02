@@ -412,7 +412,7 @@ class Convert
 		do {
 			$orders = [$roman_numeral_order[$sanitized[$index]]];
 			if ((($index + 1) < $sanitized_length) && ($values[$sanitized[$index]] > $values[$sanitized[$index + 1]])) {
-				if ((($roman_numeral_order[$sanitized[$index]] - $roman_numeral_order[$sanitized[$index + 1]]) !== 1) && (!((($roman_numeral_order[$sanitized[$index]] - $roman_numeral_order[$sanitized[$index + 1]]) === 2) && (strpos((string)$values[$roman_numeral_keys[$roman_numeral_order[$sanitized[$index]] - 1]], '5') === 0)))) {
+				if ((strpos((string)$values[$roman_numeral_keys[$sanitized[$index + 1]]], '5') === 0) || ((($roman_numeral_order[$sanitized[$index]] - $roman_numeral_order[$sanitized[$index + 1]]) !== 1) && (!((($roman_numeral_order[$sanitized[$index]] - $roman_numeral_order[$sanitized[$index + 1]]) === 2) && (strpos((string)$values[$roman_numeral_keys[$roman_numeral_order[$sanitized[$index]] - 1]], '5') === 0))))) {
 					$msg = 'Improperly-formatted input: Character order incorrect for provided string "' . $input . '"';
 					throw new RuntimeException($msg);
 				}
