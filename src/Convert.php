@@ -1,4 +1,5 @@
 <?php
+
 namespace cjrasmussen\Number;
 
 use RuntimeException;
@@ -11,11 +12,11 @@ class Convert
 	 * @param int $int
 	 * @return string
 	 */
-	public static function intToOrdinal($int): string
+	public static function intToOrdinal(int $int): string
 	{
-		$num = trim($int);
+		$num = (string)$int;
 
-		if ((substr($num, -2) >= 11) AND (substr($num, -2) <= 13) AND (strlen($num) === 2)) {
+		if ((substr($num, -2) >= 11) && (substr($num, -2) <= 13) && (strlen($num) === 2)) {
 			$ordinal = 'th';
 		} else {
 			$last_char = $num[(strlen($num) - 1)];
@@ -49,7 +50,7 @@ class Convert
 	 * @param bool $force_hundreds
 	 * @return string
 	 */
-	public static function intToEnglish($int, $force_hundreds = false): string
+	public static function intToEnglish(int $int, bool $force_hundreds = false): string
 	{
 		$num = trim($int);
 
@@ -72,9 +73,9 @@ class Convert
 			'decillion'
 		];
 
-		if ((strlen($num) === 4) AND ($num[1] !== '0') AND ($force_hundreds)) {
-			$parts[0] = substr($num, 0, 2);
-			$parts[1] = substr($num, 2, 2);
+		if ((strlen($num) === 4) && ($num[1] !== '0') && ($force_hundreds)) {
+			$parts[0] = (int)substr($num, 0, 2);
+			$parts[1] = (int)substr($num, 2, 2);
 
 			return self::intToEnglish($parts[0]) . ' ' . $labels[0] . ' ' . self::intToEnglish($parts[1]);
 		}
@@ -147,49 +148,49 @@ class Convert
 						case 2:
 							$english = 'twenty';
 							if ($num[1]) {
-								$english .= '-' . self::intToEnglish($num[1]);
+								$english .= '-' . self::intToEnglish((int)$num[1]);
 							}
 							break;
 						case 3:
 							$english = 'thirty';
 							if ($num[1]) {
-								$english .= '-' . self::intToEnglish($num[1]);
+								$english .= '-' . self::intToEnglish((int)$num[1]);
 							}
 							break;
 						case 4:
 							$english = 'forty';
 							if ($num[1]) {
-								$english .= '-' . self::intToEnglish($num[1]);
+								$english .= '-' . self::intToEnglish((int)$num[1]);
 							}
 							break;
 						case 5:
 							$english = 'fifty';
 							if ($num[1]) {
-								$english .= '-' . self::intToEnglish($num[1]);
+								$english .= '-' . self::intToEnglish((int)$num[1]);
 							}
 							break;
 						case 6:
 							$english = 'sixty';
 							if ($num[1]) {
-								$english .= '-' . self::intToEnglish($num[1]);
+								$english .= '-' . self::intToEnglish((int)$num[1]);
 							}
 							break;
 						case 7:
 							$english = 'seventy';
 							if ($num[1]) {
-								$english .= '-' . self::intToEnglish($num[1]);
+								$english .= '-' . self::intToEnglish((int)$num[1]);
 							}
 							break;
 						case 8:
 							$english = 'eighty';
 							if ($num[1]) {
-								$english .= '-' . self::intToEnglish($num[1]);
+								$english .= '-' . self::intToEnglish((int)$num[1]);
 							}
 							break;
 						case 9:
 							$english = 'ninty';
 							if ($num[1]) {
-								$english .= '-' . self::intToEnglish($num[1]);
+								$english .= '-' . self::intToEnglish((int)$num[1]);
 							}
 							break;
 					}
@@ -214,10 +215,9 @@ class Convert
 					if ($part < 100) {
 						$temp = self::intToEnglish($part);
 					} elseif ((int)substr($part, 1, 2) > 0) {
-						$temp = self::intToEnglish(substr($part, 0, 1)) . ' ' . $labels[0] . ' ' . self::intToEnglish(substr($part,
-								1, 2));
+						$temp = self::intToEnglish((int)substr($part, 0, 1)) . ' ' . $labels[0] . ' ' . self::intToEnglish((int)substr($part, 1, 2));
 					} else {
-						$temp = self::intToEnglish($part[0]) . ' ' . $labels[0];
+						$temp = self::intToEnglish((int)$part[0]) . ' ' . $labels[0];
 					}
 
 					if ($i > 0) {
@@ -242,7 +242,7 @@ class Convert
 	 * @param int $int
 	 * @return string
 	 */
-	public static function intToRoman($int): string
+	public static function intToRoman(int $int): string
 	{
 		$num = trim($int);
 
@@ -358,7 +358,7 @@ class Convert
 	 * @param string $input
 	 * @return int
 	 */
-	public static function romanToInt($input): int
+	public static function romanToInt(string $input): int
 	{
 		$values = ['I' => 1, 'V' => 5, 'X' => 10, 'L' => 50, 'C' => 100, 'D' => 500, 'M' => 1000];
 		foreach ($values AS $key => $value) {
