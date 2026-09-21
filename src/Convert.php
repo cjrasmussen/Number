@@ -21,20 +21,12 @@ class Convert
 		} else {
 			$last_char = $num[(strlen($num) - 1)];
 
-			switch ($last_char) {
-				case '1':
-					$ordinal = 'st';
-					break;
-				case '2':
-					$ordinal = 'nd';
-					break;
-				case '3':
-					$ordinal = 'rd';
-					break;
-				default:
-					$ordinal = 'th';
-					break;
-			}
+			$ordinal = match ($last_char) {
+				'1' => 'st',
+				'2' => 'nd',
+				'3' => 'rd',
+				default => 'th',
+			};
 		}
 
 		return $num . $ordinal;
@@ -55,7 +47,7 @@ class Convert
 		$num = trim($int);
 
 		$num = str_replace([',', ' '], '', $num);
-		if (false !== strpos($num, '.')) {
+		if (str_contains($num, '.')) {
 			$num = substr($num, 0, strpos($num, '.'));
 		}
 		$labels = [
@@ -217,7 +209,8 @@ class Convert
 					} elseif ((int)substr($part, 1, 2) > 0) {
 						$temp = self::intToEnglish((int)substr($part, 0, 1)) . ' ' . $labels[0] . ' ' . self::intToEnglish((int)substr($part, 1, 2));
 					} else {
-						$temp = self::intToEnglish((int)$part[0]) . ' ' . $labels[0];
+						$string = (string)$part;
+						$temp = self::intToEnglish((int)$string[0]) . ' ' . $labels[0];
 					}
 
 					if ($i > 0) {
@@ -412,7 +405,7 @@ class Convert
 		do {
 			$orders = [$roman_numeral_order[$sanitized[$index]]];
 			if ((($index + 1) < $sanitized_length) && ($values[$sanitized[$index]] > $values[$sanitized[$index + 1]])) {
-				if ((strpos((string)$values[$roman_numeral_keys[$sanitized[$index + 1]]], '5') === 0) || ((($roman_numeral_order[$sanitized[$index]] - $roman_numeral_order[$sanitized[$index + 1]]) !== 1) && (!((($roman_numeral_order[$sanitized[$index]] - $roman_numeral_order[$sanitized[$index + 1]]) === 2) && (strpos((string)$values[$roman_numeral_keys[$roman_numeral_order[$sanitized[$index]] - 1]], '5') === 0))))) {
+				if ((str_starts_with((string)$values[$roman_numeral_keys[$sanitized[$index + 1]]], '5')) || ((($roman_numeral_order[$sanitized[$index]] - $roman_numeral_order[$sanitized[$index + 1]]) !== 1) && (!((($roman_numeral_order[$sanitized[$index]] - $roman_numeral_order[$sanitized[$index + 1]]) === 2) && (str_starts_with((string)$values[$roman_numeral_keys[$roman_numeral_order[$sanitized[$index]] - 1]], '5')))))) {
 					$msg = 'Improperly-formatted input: Character order incorrect for provided string "' . $input . '"';
 					throw new RuntimeException($msg);
 				}
